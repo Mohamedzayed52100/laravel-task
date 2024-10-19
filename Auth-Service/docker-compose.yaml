@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:80"
+    environment:
+      DB_HOST: task_mysql
+      DB_PORT: 3306
+      DB_DATABASE: homzmart_dev
+      DB_USERNAME: root
+      DB_PASSWORD: SrYpw5GCq5
+      REDIS_HOST: task_redis
+      REDIS_PORT: 6379
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: SrYpw5GCq5
+      MYSQL_DATABASE: homzmart_dev
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
